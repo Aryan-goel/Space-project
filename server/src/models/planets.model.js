@@ -33,8 +33,6 @@ function loadPlanetsData() {
     })
 }
 
-// parse();
-
 module.exports = {
     loadPlanetsData,
     planets: habitablePlanets,
