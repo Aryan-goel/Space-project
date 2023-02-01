@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server":"npm run watch --prefix server",
-    "client":"npm start --prefix client",
+    "server": "npm run watch --prefix server",
+    "client": "npm start --prefix client",
     "watch": "concurrently 'npm:server' 'npm:client' ",
-    "deploy":"npm run build --prefix client && npm start --prefix server",
+    "deploy": "npm run build --prefix client && npm start --prefix server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/Aryan-goel/Space-project/issues"
   },
-  "homepage": "https://github.com/Aryan-goel/Space-project#readme"
+  "homepage": "https://github.com/Aryan-goel/Space-project#readme",
+  "dependencies": {
+    "morgan": "^1.10.0"
+  }
 }
