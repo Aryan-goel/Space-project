@@ -19,11 +19,19 @@ const launchesSchema = new mongoose.Schema({
         required: true,
 
     },
-    target:{
-        type:mongoose.Types.ObjectId,
-        ref:'Planet'
-    }
-})
+    target: {
+        type: String,
+        required: true,
+    },
+    customers: [String],
 
-
-module.exports = mongoose.model('Laucnh',launchesSchema);
+    upcoming: {
+        type: Boolean,
+        required: true,
+    },
+    success: {
+        type: Boolean,
+        required: true,
+        default: true
+    },
+});
