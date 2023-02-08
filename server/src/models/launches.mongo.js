@@ -23,8 +23,7 @@ const launchesSchema = new mongoose.Schema({
         type:mongoose.Types.ObjectId,
         ref:'Planet'
     }
-
-
-
-
 })
+
+
+module.exports = mongoose.model('Laucnh',launchesSchema);
