@@ -1,3 +1,4 @@
+const axios = require('axios');
 const launchesDatabase = require('./launches.mongo');
 const planets = require('./planets.mongo');
 
@@ -18,12 +19,30 @@ const launch = {
 };
 
 saveLaunch(launch);
+const SPACE_X_API_URL = 'https://api.spacexdata.com/v4/launches/query'
+async function loadLaunchData() {
+    console.log("downloading launch data");
+    await axios.post(SPACE_X_API_URL, {
+        query: {},
+        options: {
+            populate: [
+                {
+                    path: 'rocket',
+                    select: {
+                        name: 1
+                    }
+                }
+            ]
 
-// launches.set(launch.flightNumber, launch);
+        }
+    });
+
+}
+
 
 async function existsLaunchWithId(launchId) {
     return await launchesDatabase.findOne({
-        flightNumber:launchId,
+        flightNumber: launchId,
     })
 }
 
@@ -63,14 +82,14 @@ async function saveLaunch(launch) {
     })
 }
 
-async function scheduleNewLaunch(launch){
+async function scheduleNewLaunch(launch) {
 
-    const newFlightNumber = await getLastestFlightNumber()+1
-    const newLaunch = Object.assign(launch,{
-        success:true,
-        upcoming:true,
-        customers: ['ZTM','NASA'],
-        flightNumber:newFlightNumber
+    const newFlightNumber = await getLastestFlightNumber() + 1
+    const newLaunch = Object.assign(launch, {
+        success: true,
+        upcoming: true,
+        customers: ['ZTM', 'NASA'],
+        flightNumber: newFlightNumber
     });
 
 
@@ -80,21 +99,17 @@ async function scheduleNewLaunch(launch){
 
 
 async function abortLaunchById(launchId) {
-    // const aborted = launches.get(launchId);
-    // aborted.upcoming = false;
-    // aborted.success = false;
-    // return aborted;
-
     return await launchesDatabase.updateOne({
-        flightNumber:launchId,
+        flightNumber: launchId,
 
-    },{
-        upcoming:false,
-        success:false,
+    }, {
+        upcoming: false,
+        success: false,
     })
 }
 
 module.exports = {
+    loadLaunchData,
     getAllLaunches,
     existsLaunchWithId,
     abortLaunchById,
