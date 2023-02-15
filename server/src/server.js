@@ -2,6 +2,7 @@ const http = require('http');
 const mongoose = require('mongoose');
 
 const app = require("./app")
+require('dotenv').config();
 const { loadPlanetsData } = require('./models/planets.model');
 const { mongoConnect } = require('./services/mongo');
 const { loadLaunchData } = require('./models/launches.model')

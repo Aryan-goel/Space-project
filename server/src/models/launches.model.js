@@ -3,25 +3,10 @@ const launchesDatabase = require('./launches.mongo');
 const planets = require('./planets.mongo');
 
 const DEFAULT_FLIGHT_NUMBER = 0;
-const launches = new Map();
 
-let latestFlightNumber = 100;
-
-const launch = {
-    flightNumber: 100,
-    mission: 'Kepler Exploration X',
-    rocket: 'Explorer IS1',
-    launchDate: new Date("December 27, 2030"),
-    target: 'Kepler-442 b',
-    customers: ['Ztm', 'NASA'],
-    upcoming: true,
-    success: true,
-};
-
-saveLaunch(launch);
 const SPACE_X_API_URL = 'https://api.spacexdata.com/v4/launches/query'
 
-async function populateLaunches(){
+async function populateLaunches() {
     console.log("downloading launch data");
     const response = await axios.post(SPACE_X_API_URL, {
         query: {},
@@ -45,7 +30,7 @@ async function populateLaunches(){
         }
     });
 
-    if(response.status !==200){
+    if (response.status !== 200) {
         console.log('Problem downloading launch data!!');
         throw new Error('Launch Data download failed')
     }
@@ -73,22 +58,22 @@ async function populateLaunches(){
     }
 }
 async function loadLaunchData() {
-   const firstLaunch =  await findLaunch({
-        flightNumber:1,
-        rocket:'Falcon 1',
-        mission:'FalconSat',
+    const firstLaunch = await findLaunch({
+        flightNumber: 1,
+        rocket: 'Falcon 1',
+        mission: 'FalconSat',
     })
-    if(firstLaunch){
+    if (firstLaunch) {
         console.log('Launch data already loaded!!');
 
-    }else{
+    } else {
         await populateLaunches()
     }
 }
 
-async function findLaunch(filter){
+async function findLaunch(filter) {
     return await launchesDatabase.findOne(filter)
-    
+
 }
 
 
@@ -111,10 +96,13 @@ async function getLastestFlightNumber() {
     return latestLaunch.flightNumber;
 }
 
-async function getAllLaunches() {
+async function getAllLaunches(skip, limit) {
 
     return await launchesDatabase
-        .find({}, { '-id': 0, '__v': 0 });
+        .find({}, { '-id': 0, '__v': 0 })
+        .sort({ flightNumber: 1 })
+        .skip(skip)
+        .limit(limit)
 }
 
 async function saveLaunch(launch) {
