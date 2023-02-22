@@ -1,4 +1,4 @@
-name: NASA API CI
+name: Space-project
 on:
   push:
     branches: [main]
